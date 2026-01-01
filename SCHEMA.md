@@ -9,6 +9,7 @@
 - email
 - contact_number
 - role (admin | teacher)
+- status (active | inactive)
 
 ## students
 
@@ -18,7 +19,7 @@
 - parent_name
 - contact_number
 - registered_at
-- active
+- status (active | inactive)
 
 ## batches
 
