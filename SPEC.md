@@ -3,7 +3,7 @@
 ## 1. Problem Statement
 
 A small coaching center needs a simple internal system to manage students,
-batches, attendance, and monthly fee status. Currently this is handled
+batches, attendance, fees and payments. Currently this is handled
 using notebooks, Excel, and WhatsApp, leading to mistakes and confusion.
 
 ## 2. Target Users
