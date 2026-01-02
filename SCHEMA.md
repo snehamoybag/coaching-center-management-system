@@ -16,8 +16,10 @@
 - id
 - first_name
 - last_name
+- date_of_birth (dd/mm/yyyy)
 - parent_name
 - contact_number
+- aadhaar_number
 - registered_at
 - status (active | inactive)
 
@@ -25,14 +27,6 @@
 
 - id
 - name
-
-## batch_sessions
-
-- id
-- batch_id
-- start_time
-- end_time
-- date
 
 ## student_batches
 
@@ -49,15 +43,15 @@
 ## student_attendance
 
 - id
-- batch_session_id
+- batch_id
 - student_id
-- status (present | absent)
+- date
 
-## fees
+## student_fees
 
 - id
-- student_id
 - amount
+- student_id
 
 ## student_payments
 
