@@ -1,10 +1,18 @@
 import express, { json, urlencoded } from "express";
+import errorRequestHandler from "./middlewares/error-request-handler.middleware";
+import requeset404Handler from "./middlewares/error-404-handler.middleware";
 
 const app = express();
 
 // PARSERS
 app.use(urlencoded({ extended: true }));
 app.use(json());
+
+// ERROR HANDLER MIDDLEWARE
+app.use(errorRequestHandler);
+
+// 404 HANDLER
+app.use(requeset404Handler);
 
 // SERVER
 const PORT = Number(process.env.server_port) || 3000;
