@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String       @id @default(uuid())
+  email         String       @unique
+  passwordHash  String
+  firstName     String       @db.VarChar(35)
+  lastName      String       @db.VarChar(35)
+  contactNumber Int          @unique
+  role          UserRole     @default(TEACHER)
+  status        ActiveStatus @default(ACTIVE)
+  registeredAt  DateTime     @default(now())
+
+  batches Batch[]
+
+  @@index([email, contactNumber])
+}
+
+model Student {
+  id            String       @id @default(uuid())
+  firstName     String       @db.VarChar(35)
+  lastName      String       @db.VarChar(35)
+  dateOfBirth   String       @db.VarChar(10) // dd/mm/yyyy format
+  parentName    String       @db.VarChar(75)
+  contactNumber Int
+  aadhaarNumber Int          @unique
+  registeredAt  DateTime     @default(now())
+  status        ActiveStatus @default(ACTIVE)
+
+  batches     Batch[]
+  attendances StudentAttendance[]
+  fees        StudentFee[]
+  payments    StudentPayment[]
+
+  @@index([aadhaarNumber])
+}
+
+model Batch {
+  id   String @id @default(uuid())
+  name String @db.VarChar(255)
+
+  teachers    User[]
+  students    Student[]
+  attendances StudentAttendance[]
+}
+
+model StudentAttendance {
+  id   String   @id @default(uuid())
+  date DateTime @default(now())
+
+  batch   Batch  @relation(fields: [batchId], references: [id])
+  batchId String
+
+  presentStudents Student[]
+}
+
+model StudentFee {
+  id     String @id @default(uuid())
+  amount Int
+
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String
+
+  payment StudentPayment?
+}
+
+model StudentPayment {
+  id     String      @id @default(uuid())
+  amount Int
+  date   DateTime    @default(now())
+  mode   PaymentMode
+
+  fee   StudentFee @relation(fields: [feeId], references: [id])
+  feeId String     @unique
+
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String
+}
+
+enum UserRole {
+  ADMIN
+  TEACHER
+}
+
+enum ActiveStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum PaymentMode {
+  BANK
+  CASH
+  UPI
+}
