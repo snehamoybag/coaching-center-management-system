@@ -138,3 +138,5 @@ dist
 # ignore prisma generated files
 generated/prisma/
 
+
+/generated/prisma

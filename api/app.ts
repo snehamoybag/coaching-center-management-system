@@ -1,12 +1,17 @@
+import "dotenv/config";
 import express, { json, urlencoded } from "express";
 import errorRequestHandler from "./middlewares/error-request-handler.middleware";
 import requeset404Handler from "./middlewares/error-404-handler.middleware";
+import v1Router from "./routes/v1";
 
 const app = express();
 
 // PARSERS
 app.use(urlencoded({ extended: true }));
 app.use(json());
+
+// ROUTES
+app.use("/api/v1", v1Router);
 
 // ERROR HANDLER MIDDLEWARE
 app.use(errorRequestHandler);
