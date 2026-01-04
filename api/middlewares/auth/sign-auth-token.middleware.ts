@@ -26,7 +26,7 @@ const signAuthToken: RequestHandler = (req, res, next) => {
       return next(new Error("Failed to generate auth token."));
     }
 
-    res.locals.token = token;
+    res.locals.authToken = token;
     next();
   });
 };

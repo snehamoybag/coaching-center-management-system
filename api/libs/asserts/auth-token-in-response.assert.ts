@@ -1,7 +1,7 @@
 import { Response } from "express";
 
 const assertAuthTokenInResponse = (res: Response) => {
-  const authToken = res.locals.token;
+  const authToken = res.locals.authToken;
 
   if (!authToken) {
     throw new Error("Authentication token not found in response.");

@@ -1,5 +1,6 @@
 import { prisma } from "../configs/prisma.config";
-import type { SafeUser } from "../types/safe-user.type";
+import { UserCreateInput } from "../generated/prisma/models";
+import { type SafeUser } from "../types/safe-user.type";
 import bcrypt from "bcryptjs";
 
 export const safeUserSelect = {
@@ -22,6 +23,15 @@ export const findByEmail = (email: string): Promise<SafeUser | null> => {
   });
 };
 
+export const findByContactNumber = (
+  contactNumber: number,
+): Promise<SafeUser | null> => {
+  return prisma.user.findUnique({
+    where: { contactNumber },
+    select: safeUserSelect,
+  });
+};
+
 export const getIsPasswordMatching = async (
   userId: string,
   password: string,
@@ -33,4 +43,8 @@ export const getIsPasswordMatching = async (
   }
 
   return bcrypt.compare(password, user.passwordHash);
+};
+
+export const create = async (inputs: UserCreateInput): Promise<SafeUser> => {
+  return prisma.user.create({ data: inputs, select: safeUserSelect });
 };
