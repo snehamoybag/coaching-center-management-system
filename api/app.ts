@@ -4,6 +4,8 @@ import errorRequestHandler from "./middlewares/error-request-handler.middleware"
 import requeset404Handler from "./middlewares/error-404-handler.middleware";
 import v1Router from "./routes/v1";
 
+import "./configs/passport"; // intialize passport auth strategies
+
 const app = express();
 
 // PARSERS

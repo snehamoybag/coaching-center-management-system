@@ -25,7 +25,7 @@ router.post("/", verifyAuthToken, (_req, res) => {
   );
 });
 
-router.use("/signup", signupRouter);
-router.use("/login", loginRouter);
+router.use("/auth/signup", signupRouter);
+router.use("/auth/login", loginRouter);
 
 export default router;

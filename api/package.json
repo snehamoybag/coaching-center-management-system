@@ -15,7 +15,6 @@
   "license": "ISC",
   "description": "API for a small coaching center to manage students, batches, attendance, and fees and payments.",
   "dependencies": {
-    "-": "^0.0.1",
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
     "@types/passport": "^1.0.17",

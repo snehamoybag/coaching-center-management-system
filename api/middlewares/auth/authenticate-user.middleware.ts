@@ -6,6 +6,7 @@ import { ErrorUnauthorized } from "../../libs/http-exceptions";
 const authenticateUser: RequestHandler = async (req, res, next) => {
   const authentcateCallback: AuthenticateCallback = (err, user, info) => {
     if (err) {
+      console.log("error");
       return next(err);
     }
 
