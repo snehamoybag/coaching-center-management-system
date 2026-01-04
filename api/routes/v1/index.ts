@@ -3,6 +3,7 @@ import { SuccessResponse } from "../../libs/http-response-shapes";
 import verifyAuthToken from "../../middlewares/auth/verify-auth-token.auth";
 import signupRouter from "./auth/signup.route";
 import loginRouter from "./auth/login.route";
+import studentsRouter from "./students.route";
 
 const router = Router();
 
@@ -27,5 +28,10 @@ router.post("/", verifyAuthToken, (_req, res) => {
 
 router.use("/auth/signup", signupRouter);
 router.use("/auth/login", loginRouter);
+
+// AUTHORIZATION IS REQUIRED TO ACCESS BELLOW ENDPOINTS
+router.use("/*splat", verifyAuthToken);
+
+router.use("/students", studentsRouter);
 
 export default router;
