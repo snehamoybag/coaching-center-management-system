@@ -24,7 +24,7 @@ export const findByEmail = (email: string): Promise<SafeUser | null> => {
 };
 
 export const findByContactNumber = (
-  contactNumber: number,
+  contactNumber: string,
 ): Promise<SafeUser | null> => {
   return prisma.user.findUnique({
     where: { contactNumber },

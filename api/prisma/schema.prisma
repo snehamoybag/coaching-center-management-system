@@ -19,7 +19,7 @@ model User {
   passwordHash  String
   firstName     String       @db.VarChar(35)
   lastName      String       @db.VarChar(35)
-  contactNumber Int          @unique
+  contactNumber String       @unique @db.VarChar(10)
   role          UserRole     @default(TEACHER)
   status        ActiveStatus @default(ACTIVE)
   registeredAt  DateTime     @default(now())
@@ -35,8 +35,8 @@ model Student {
   lastName      String       @db.VarChar(35)
   dateOfBirth   String       @db.VarChar(10) // dd/mm/yyyy format
   parentName    String       @db.VarChar(75)
-  contactNumber Int
-  aadhaarNumber Int          @unique
+  contactNumber String       @db.VarChar(10)
+  aadhaarNumber String       @unique @db.VarChar(12)
   registeredAt  DateTime     @default(now())
   status        ActiveStatus @default(ACTIVE)
 

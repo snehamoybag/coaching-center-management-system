@@ -16,7 +16,7 @@ export const create = (userRole: UserRole, inputs: StudentCreateInput) => {
 
 export const findByAadhaarNumber = (
   userRole: UserRole,
-  aadhaarNumber: number,
+  aadhaarNumber: string,
 ) => {
   return prisma.student.findUnique({
     where: { aadhaarNumber },

@@ -3,10 +3,13 @@ import express, { json, urlencoded } from "express";
 import errorRequestHandler from "./middlewares/error-request-handler.middleware";
 import requeset404Handler from "./middlewares/error-404-handler.middleware";
 import v1Router from "./routes/v1";
-
-import "./configs/passport"; // intialize passport auth strategies
+import passport from "passport";
 
 const app = express();
+
+// INTIALIZE PASSPORT AUTH STRATEGIES
+import "./configs/passport";
+app.use(passport.initialize());
 
 // PARSERS
 app.use(urlencoded({ extended: true }));

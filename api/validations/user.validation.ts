@@ -18,7 +18,7 @@ export const name = (
     .notEmpty()
     .withMessage(`${nameType} is require.`)
     .isAlpha()
-    .withMessage(`${nameType} must contain only alphabatic characters.`)
+    .withMessage(`${nameType} must contain only alphabetic characters.`)
     .trim()
     .isLength({ min: MIN_LENGTH, max: MAX_LENGTH })
     .withMessage(`${nameType} must be between ${MIN_LENGTH} and ${MAX_LENGTH}`);
@@ -73,8 +73,8 @@ export const contactNumber = (isOptional: boolean = false) => {
     .isLength({ min: LENGTH, max: LENGTH })
     .withMessage(`Contact number must have ${LENGTH} numeric characters.`)
     .custom(async (contactNumber: string) => {
-      const number = Number(contactNumber);
-      const userWithSameContactNumber = await findUserByContactNumber(number);
+      const userWithSameContactNumber =
+        await findUserByContactNumber(contactNumber);
 
       if (userWithSameContactNumber) {
         throw new Error(
@@ -110,4 +110,17 @@ export const activeStatus = (isOptional: boolean = false) => {
     .withMessage(
       `Active status must be one of these values ${statusValues.join(" / ")}.`,
     );
+};
+
+export const aadhaarNumber = (isOptional: boolean = false) => {
+  const LENGTH = 12;
+
+  return body("aadhaarNumber")
+    .optional(isOptional)
+    .notEmpty()
+    .withMessage("Aadhaar number is required.")
+    .isNumeric()
+    .withMessage("Aadhaar number must be numeric.")
+    .isLength({ min: LENGTH, max: LENGTH })
+    .withMessage(`Aadhaar number must have ${LENGTH} numeric characters.`);
 };

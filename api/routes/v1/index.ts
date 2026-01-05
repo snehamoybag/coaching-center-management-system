@@ -30,7 +30,7 @@ router.use("/auth/signup", signupRouter);
 router.use("/auth/login", loginRouter);
 
 // AUTHORIZATION IS REQUIRED TO ACCESS BELLOW ENDPOINTS
-router.use("/*splat", verifyAuthToken);
+router.all("/*splat", verifyAuthToken);
 
 router.use("/students", studentsRouter);
 

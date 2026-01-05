@@ -1,7 +1,11 @@
 import { body } from "express-validator";
 import { findByAadhaarNumber as findStudentByAadhaarNumber } from "../models/student.model";
+import { Request } from "express";
+import assertUserInRequest from "../libs/asserts/user-in-request.assert";
+import { SafeUser } from "../types/safe-user.type";
+import { ErrorForbidden } from "../libs/http-exceptions";
 
-export const parentName = (isOptional: boolean = true) => {
+export const parentName = (isOptional: boolean = false) => {
   const MIN_LENGTH = 5;
   const MAX_LENGTH = 75;
 
@@ -91,11 +95,16 @@ export const aadhaarNumber = (isOptional: boolean = false) => {
     .withMessage("Aadhaar number must be numeric.")
     .isLength({ min: LENGTH, max: LENGTH })
     .withMessage(`Aadhaar number must have ${LENGTH} numeric characters.`)
-    .custom(async (value: string) => {
+    .custom(async (value: string, { req }) => {
+      const user = req.user as SafeUser;
       const aadhaarNumber = Number(value);
 
+      if (user.role !== "ADMIN") {
+        throw new ErrorForbidden("Only admin can register a student.");
+      }
+
       const studentWithSameAadhaarNumber = await findStudentByAadhaarNumber(
-        "ADMIN",
+        "TEACHER",
         aadhaarNumber,
       );
 
