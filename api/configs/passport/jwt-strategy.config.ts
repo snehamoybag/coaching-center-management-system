@@ -6,10 +6,13 @@ import {
   VerifyCallback,
 } from "passport-jwt";
 import { findById as findByUserId } from "../../models/user.model";
+import assertAuthTokenKey from "../../libs/asserts/auth-token-key.assert";
+
+const AUTH_TOKE_KEY = assertAuthTokenKey();
 
 const jwtOptions: StrategyOptionsWithoutRequest = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // Bearer <token>
-  secretOrKey: String(process.env.JWT_PRIVATE_KEY),
+  secretOrKey: AUTH_TOKE_KEY,
 };
 
 // runs after validating jwt
@@ -18,7 +21,7 @@ const jwtVerifyCallback: VerifyCallback = async (payload, done) => {
   try {
     const userId = payload.id;
 
-    if (isNaN(userId)) {
+    if (!userId || typeof userId !== "string") {
       return done(null, false, { message: "Invalid user id." });
     }
 
