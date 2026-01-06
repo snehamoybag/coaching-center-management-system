@@ -225,7 +225,7 @@ Rule:
 
 - Batch with the matching id must exist.
 
-## Payements
+## Payments
 
 ### GET /payments
 

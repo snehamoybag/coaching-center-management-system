@@ -114,7 +114,9 @@ export const aadhaarNumber = (isOptional: boolean = false) => {
       const user = assertUserInRequest(req as Request);
 
       if (user.role !== "ADMIN") {
-        throw new ErrorForbidden("Only admin can register a student.");
+        throw new ErrorForbidden(
+          "Only admin can create or update a student data.",
+        );
       }
 
       const studentWithSameAadhaarNumber = await findStudentByAadhaarNumber(
@@ -123,9 +125,7 @@ export const aadhaarNumber = (isOptional: boolean = false) => {
       );
 
       if (studentWithSameAadhaarNumber) {
-        throw new Error(
-          "Aadhaar number is already registerd by another student.",
-        );
+        throw new Error("Aadhaar number is already registerd.");
       }
 
       return true;

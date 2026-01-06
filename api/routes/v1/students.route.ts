@@ -4,6 +4,12 @@ import adminOnly from "../../middlewares/auth/admin-only.middleware";
 
 const studentsRouter = Router();
 
-studentsRouter.post("/", adminOnly, studentsController.registerStudent);
+// /students
+studentsRouter.get("/", studentsController.getMany);
+studentsRouter.post("/", adminOnly, studentsController.register);
+
+// /students/:id
+studentsRouter.get("/:id", studentsController.getById);
+studentsRouter.put("/:id", adminOnly, studentsController.update);
 
 export default studentsRouter;
