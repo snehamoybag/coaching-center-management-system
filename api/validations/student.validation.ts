@@ -2,7 +2,6 @@ import { body } from "express-validator";
 import { findByAadhaarNumber as findStudentByAadhaarNumber } from "../models/student.model";
 import { Request } from "express";
 import assertUserInRequest from "../libs/asserts/user-in-request.assert";
-import { SafeUser } from "../types/safe-user.type";
 import { ErrorForbidden } from "../libs/http-exceptions";
 
 export const parentName = (isOptional: boolean = false) => {
@@ -22,6 +21,14 @@ export const parentName = (isOptional: boolean = false) => {
     .custom((value: string) => {
       const [firstName, lastName] = value.split(" ");
       const alphaRegex = /^[a-zA-Z]+$/;
+
+      if (!firstName) {
+        throw new Error("parent's first name is required.");
+      }
+
+      if (!lastName) {
+        throw new Error("parent's last name is required.");
+      }
 
       if (!alphaRegex.test(firstName)) {
         throw new Error(
@@ -46,21 +53,29 @@ export const dateOfBirth = (isOptional: boolean = false) => {
     .withMessage("Date of birth is required.")
     .isString()
     .withMessage("Date of birth must be a string.")
-    .custom((value: string) => {
+    .custom((date: string) => {
       const DOBRegex = /^(\d\d)\/(\d\d)\/(\d\d\d\d)$/; // dd/mm/yyyy
 
-      if (!DOBRegex.test(value)) {
+      if (!DOBRegex.test(date)) {
         throw new Error(
           "Invalid format. Please provide date of birth in 'dd/mm/yyyy' format only.",
         );
       }
 
-      const birthYear = Number(value.split("/")[2]);
-      const currentYear = Number(new Date().toLocaleDateString().split("/")[2]);
+      const dateSplit = date.split("/");
+      const dateInMMDDYYFormat = `${dateSplit[1]}/${dateSplit[0]}/${dateSplit[2]}`;
+      const isDateInvalid = isNaN(Number(new Date(dateInMMDDYYFormat))); // valid date is a number
+
+      if (isDateInvalid) {
+        throw new Error("Invalid date of birth.");
+      }
+
+      const birthYear = Number(dateSplit[2]);
+      const currentYear = new Date().getFullYear();
       const oldestBirthYear = 1930;
       const youngestBirthYear = currentYear - 5;
 
-      if (birthYear <= oldestBirthYear && birthYear >= youngestBirthYear) {
+      if (birthYear <= oldestBirthYear || birthYear >= youngestBirthYear) {
         throw new Error(
           `Birth year must be between ${oldestBirthYear} and ${youngestBirthYear}.`,
         );
@@ -95,16 +110,15 @@ export const aadhaarNumber = (isOptional: boolean = false) => {
     .withMessage("Aadhaar number must be numeric.")
     .isLength({ min: LENGTH, max: LENGTH })
     .withMessage(`Aadhaar number must have ${LENGTH} numeric characters.`)
-    .custom(async (value: string, { req }) => {
-      const user = req.user as SafeUser;
-      const aadhaarNumber = Number(value);
+    .custom(async (aadhaarNumber: string, { req }) => {
+      const user = assertUserInRequest(req as Request);
 
       if (user.role !== "ADMIN") {
         throw new ErrorForbidden("Only admin can register a student.");
       }
 
       const studentWithSameAadhaarNumber = await findStudentByAadhaarNumber(
-        "TEACHER",
+        user.role,
         aadhaarNumber,
       );
 

@@ -50,8 +50,8 @@ export const registerStudent: RequestHandler[] = [
       firstName,
       lastName,
       parentName,
-      contactNumber: Number(contactNumber),
-      aadhaarNumber: Number(aadhaarNumber),
+      contactNumber,
+      aadhaarNumber,
       dateOfBirth,
     };
 

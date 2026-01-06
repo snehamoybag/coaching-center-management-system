@@ -45,7 +45,7 @@ export const createUser: RequestHandler = async (req, _res, next) => {
     lastName,
     email,
     passwordHash,
-    contactNumber: Number(contactNumber),
+    contactNumber,
     status: activeStatus || "ACTIVE",
     role: "TEACHER",
   };
