@@ -50,7 +50,7 @@ model Student {
 
 model Batch {
   id   String @id @default(uuid())
-  name String @db.VarChar(255)
+  name String @unique @db.VarChar(255)
 
   teachers    User[]
   students    Student[]

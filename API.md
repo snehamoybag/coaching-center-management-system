@@ -25,6 +25,7 @@ Auth:
 - Teachers account only.
 - Admin can promote a teacher to admin role.
 - First admin is created manually (seeded).
+- Only an admin is allowed to create a teachers account.
 
 ## Students
 
