@@ -4,6 +4,7 @@ import verifyAuthToken from "../../middlewares/auth/verify-auth-token.auth";
 import signupRouter from "./auth/signup.route";
 import loginRouter from "./auth/login.route";
 import studentsRouter from "./students.route";
+import batchesRouter from "./batches.route";
 
 const router = Router();
 
@@ -33,5 +34,7 @@ router.use("/auth/login", loginRouter);
 router.all("/*splat", verifyAuthToken);
 
 router.use("/students", studentsRouter);
+
+router.use("/batches", batchesRouter);
 
 export default router;

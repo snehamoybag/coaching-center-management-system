@@ -4,8 +4,8 @@ import { Order } from "../types/order-type";
 // Make limit not more than 200
 // Limit is 100 if no query is present
 export const getNormalizedLimit = (req: Request): number => {
-  const BASE_LIMIT = 100;
-  const MAX_LIMIT = 200;
+  const BASE_LIMIT = 20;
+  const MAX_LIMIT = 100;
 
   const queryLimit = Number(req.query.limit) || BASE_LIMIT;
 

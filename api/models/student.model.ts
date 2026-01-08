@@ -4,11 +4,12 @@ import {
   StudentCreateInput,
   StudentInclude,
   StudentOmit,
+  StudentSelect,
   StudentUpdateInput,
 } from "../generated/prisma/models";
 import type { Order } from "../types/order-type";
 
-const getSafeStudentOmit = (role: UserRole): StudentOmit | undefined => {
+export const getSafeStudentOmit = (role: UserRole): StudentOmit | undefined => {
   return role !== "ADMIN"
     ? {
         contactNumber: true,
@@ -17,7 +18,9 @@ const getSafeStudentOmit = (role: UserRole): StudentOmit | undefined => {
     : undefined;
 };
 
-const getSafeStudentIncludes = (role: UserRole): StudentInclude | undefined => {
+export const getSafeStudentIncludes = (
+  role: UserRole,
+): StudentInclude | undefined => {
   return role === "ADMIN"
     ? {
         batches: true,
@@ -25,6 +28,28 @@ const getSafeStudentIncludes = (role: UserRole): StudentInclude | undefined => {
         payments: true,
       }
     : undefined;
+};
+
+export const getSafeStudentSelect = (viewerRole: UserRole): StudentSelect => {
+  const adminOnlySelectes: StudentSelect =
+    viewerRole === "ADMIN"
+      ? {
+          contactNumber: true,
+          batches: true,
+          fees: true,
+          payments: true,
+        }
+      : {};
+
+  return {
+    id: true,
+    firstName: true,
+    lastName: true,
+    parentName: true,
+    dateOfBirth: true,
+    registeredAt: true,
+    ...adminOnlySelectes,
+  };
 };
 
 // ONLY ADMIN CAN CREATE, UPDATE, DELETE

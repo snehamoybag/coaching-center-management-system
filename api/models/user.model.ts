@@ -1,15 +1,23 @@
 import { prisma } from "../configs/prisma.config";
-import { UserCreateInput } from "../generated/prisma/models";
+import { UserRole } from "../generated/prisma/enums";
+import { UserCreateInput, UserSelect } from "../generated/prisma/models";
 import { type SafeUser } from "../types/safe-user.type";
 import bcrypt from "bcryptjs";
 
-export const safeUserSelect = {
+const safeUserSelect: UserSelect = {
   id: true,
   firstName: true,
   lastName: true,
   role: true,
   registeredAt: true,
   status: true,
+};
+
+export const getSafeTeacherSelect = (viewerRole: UserRole): UserSelect => {
+  return {
+    ...safeUserSelect,
+    contactNumber: viewerRole === "ADMIN",
+  };
 };
 
 export const findById = (id: string): Promise<SafeUser | null> => {
