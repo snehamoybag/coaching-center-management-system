@@ -9,33 +9,38 @@ import {
   getOrder,
 } from "../libs/format-url-queries";
 import { ErrorNotFound } from "../libs/http-exceptions";
-import { Param } from "@prisma/client/runtime/client";
 import assertUserInRequest from "../libs/asserts/user-in-request.assert";
-import { UserRole } from "../generated/prisma/enums";
+
+const optional = true;
+
+const handleValidationErrors: RequestHandler = (req, res, next) => {
+  const validationsErrors = validationResult(req);
+
+  if (validationsErrors.isEmpty()) {
+    return next();
+  }
+
+  const statusCode = 400;
+  return res.json(
+    new FailureResponse(statusCode, "Form validation failed.", {
+      errors: validationsErrors.mapped(),
+    }),
+  );
+};
 
 export const create: RequestHandler[] = [
   batchValidation.name(),
+  batchValidation.studentIds(optional),
+  batchValidation.teacherIds(optional),
 
   // handle validation errors
-  (req, res, next) => {
-    const validationsErrors = validationResult(req);
-
-    if (validationsErrors.isEmpty()) {
-      return next();
-    }
-
-    const statusCode = 400;
-    return res.json(
-      new FailureResponse(statusCode, "Form validation failed.", {
-        errors: validationsErrors.mapped(),
-      }),
-    );
-  },
+  handleValidationErrors,
 
   // handle creation
   async (req, res) => {
-    const { name } = req.body;
-    const batch = await batchModel.create(name);
+    const { name, teacherIds, studentIds } = req.body;
+
+    const batch = await batchModel.create({ name, teacherIds, studentIds });
 
     return res.json(
       new SuccessResponse("Batch created successfully.", { batch }),

@@ -4,10 +4,54 @@ import { Order } from "../types/order-type";
 import { getSafeStudentSelect } from "./student.model";
 import { getSafeTeacherSelect } from "./user.model";
 
-export const create = (name: string) => {
+const getvalidTeacherIds = (teacherIds: string[]) => {
+  return prisma.user.findMany({
+    where: { id: { in: teacherIds } },
+    select: { id: true },
+  });
+};
+
+const getvalidStudentIds = (studentIds: string[]) => {
+  return prisma.student.findMany({
+    where: { id: { in: studentIds } },
+    select: { id: true },
+  });
+};
+
+export const create = async (input: {
+  name: string;
+  teacherIds?: string[];
+  studentIds?: string[];
+}) => {
+  const { name, teacherIds, studentIds } = input;
+  // filter out invalid ids
+  const [validTeacherIds, validStudentIds] = await prisma.$transaction([
+    getvalidTeacherIds(teacherIds || []),
+    getvalidStudentIds(studentIds || []),
+  ]);
+
   return prisma.batch.create({
     data: {
       name,
+
+      teachers: {
+        connect: validTeacherIds,
+      },
+
+      students: {
+        connect: validStudentIds,
+      },
+    },
+
+    include: {
+      // only admin can create a batch
+      teachers: {
+        select: getSafeTeacherSelect("ADMIN"),
+      },
+
+      students: {
+        select: getSafeStudentSelect("ADMIN"),
+      },
     },
   });
 };
