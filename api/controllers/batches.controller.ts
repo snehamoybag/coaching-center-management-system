@@ -13,7 +13,7 @@ import assertUserInRequest from "../libs/asserts/user-in-request.assert";
 
 const optional = true;
 
-const handleValidationErrors: RequestHandler = (req, res, next) => {
+const handleFormValidationErrors: RequestHandler = (req, res, next) => {
   const validationsErrors = validationResult(req);
 
   if (validationsErrors.isEmpty()) {
@@ -30,20 +30,43 @@ const handleValidationErrors: RequestHandler = (req, res, next) => {
 
 export const create: RequestHandler[] = [
   batchValidation.name(),
-  batchValidation.studentIds(optional),
-  batchValidation.teacherIds(optional),
+  batchValidation.studentIds("studentIds", optional),
+  batchValidation.teacherIds("teacherIds", optional),
 
   // handle validation errors
-  handleValidationErrors,
+  handleFormValidationErrors,
 
   // handle creation
   async (req, res) => {
-    const { name, teacherIds, studentIds } = req.body;
-
-    const batch = await batchModel.create({ name, teacherIds, studentIds });
+    const batch = await batchModel.create(req.body);
 
     return res.json(
       new SuccessResponse("Batch created successfully.", { batch }),
+    );
+  },
+];
+
+export const update: RequestHandler[] = [
+  batchValidation.name(optional),
+  batchValidation.studentIds("addedStudentIds", optional),
+  batchValidation.studentIds("removedStudentIds", optional),
+  batchValidation.teacherIds("addedTeacherIds", optional),
+  batchValidation.teacherIds("removedTeacherIds", optional),
+
+  // handle form validation
+  handleFormValidationErrors,
+
+  // handle update
+  async (req, res) => {
+    const batchId = req.params.id;
+
+    const batch = await batchModel.update(batchId, req.body);
+
+    res.json(
+      new SuccessResponse(
+        `Batch with the id '${batchId}' updated successfully.`,
+        { batch },
+      ),
     );
   },
 ];

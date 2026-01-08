@@ -56,6 +56,65 @@ export const create = async (input: {
   });
 };
 
+export const update = async (
+  id: string,
+  input: {
+    name?: string;
+    addedTeacherIds?: string[];
+    removedTeacherIds?: string[];
+    addedStudentIds?: string[];
+    removedStudentIds?: string[];
+  },
+) => {
+  const {
+    name,
+    addedTeacherIds,
+    removedTeacherIds,
+    addedStudentIds,
+    removedStudentIds,
+  } = input;
+
+  const [
+    validAddedTeacherIds,
+    validRemovedTeacherIds,
+    validAddedStudentIds,
+    validRemovedStudentIds,
+  ] = await prisma.$transaction([
+    getvalidTeacherIds(addedTeacherIds || []),
+    getvalidTeacherIds(removedTeacherIds || []),
+    getvalidStudentIds(addedStudentIds || []),
+    getvalidStudentIds(removedStudentIds || []),
+  ]);
+
+  return prisma.batch.update({
+    where: { id },
+    data: {
+      name,
+
+      teachers: {
+        disconnect: validRemovedTeacherIds,
+        connect: validAddedTeacherIds,
+      },
+
+      students: {
+        disconnect: validRemovedStudentIds,
+        connect: validAddedStudentIds,
+      },
+    },
+
+    include: {
+      // only admin can update a batch
+      teachers: {
+        select: getSafeTeacherSelect("ADMIN"),
+      },
+
+      students: {
+        select: getSafeStudentSelect("ADMIN"),
+      },
+    },
+  });
+};
+
 export const findMany = (limit: number, offset: number, order: Order) => {
   return prisma.batch.findMany({
     take: limit,

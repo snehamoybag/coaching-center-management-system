@@ -1,5 +1,8 @@
-import { body } from "express-validator";
-import { findByName as findBatchByName } from "../models/batch.model";
+import { body, param } from "express-validator";
+import {
+  findByName as findBatchByName,
+  findById as findBatchById,
+} from "../models/batch.model";
 
 export const name = (isOptional: boolean = false) => {
   const MIN_LENGTH = 3;
@@ -26,8 +29,8 @@ export const name = (isOptional: boolean = false) => {
     });
 };
 
-export const studentIds = (isOptional: boolean = false) => {
-  return body("studentIds")
+export const studentIds = (fieldName: string, isOptional: boolean = false) => {
+  return body(fieldName)
     .optional(isOptional)
     .notEmpty()
     .withMessage("Student ids are required.")
@@ -39,8 +42,8 @@ export const studentIds = (isOptional: boolean = false) => {
     .withMessage("Student id must be of type string.");
 };
 
-export const teacherIds = (isOptional: boolean = false) => {
-  return body("teacherIds")
+export const teacherIds = (fieldName: string, isOptional: boolean = false) => {
+  return body(fieldName)
     .optional(isOptional)
     .notEmpty()
     .withMessage("Teacher ids are required.")
@@ -50,4 +53,16 @@ export const teacherIds = (isOptional: boolean = false) => {
       return teachersArr.every((id) => typeof id === "string");
     })
     .withMessage("Teacher id must be of type string.");
+};
+
+export const idParams = () => {
+  return param("id").custom(async (batchId) => {
+    const batchWithId = await findBatchById(batchId);
+
+    if (!batchWithId) {
+      throw new Error(`Batch with the id '${batchId}' is not found.`);
+    }
+
+    return true;
+  });
 };
