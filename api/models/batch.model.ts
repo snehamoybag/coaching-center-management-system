@@ -3,20 +3,8 @@ import { UserRole } from "../generated/prisma/enums";
 import { Order } from "../types/order-type";
 import { getSafeStudentSelect } from "./student.model";
 import { getSafeTeacherSelect } from "./user.model";
-
-const getvalidTeacherIds = (teacherIds: string[]) => {
-  return prisma.user.findMany({
-    where: { id: { in: teacherIds } },
-    select: { id: true },
-  });
-};
-
-const getvalidStudentIds = (studentIds: string[]) => {
-  return prisma.student.findMany({
-    where: { id: { in: studentIds } },
-    select: { id: true },
-  });
-};
+import { getvalidStudentIds } from "./student.model";
+import { getvalidTeacherIds } from "./user.model";
 
 export const create = async (input: {
   name: string;

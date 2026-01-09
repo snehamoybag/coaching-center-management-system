@@ -5,6 +5,7 @@ import signupRouter from "./auth/signup.route";
 import loginRouter from "./auth/login.route";
 import studentsRouter from "./students.route";
 import batchesRouter from "./batches.route";
+import attendancesRouter from "./attendances.route";
 
 const router = Router();
 
@@ -36,5 +37,7 @@ router.all("/*splat", verifyAuthToken);
 router.use("/students", studentsRouter);
 
 router.use("/batches", batchesRouter);
+
+router.use("/attendances", attendancesRouter);
 
 export default router;

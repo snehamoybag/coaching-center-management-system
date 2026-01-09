@@ -56,3 +56,10 @@ export const getIsPasswordMatching = async (
 export const create = async (inputs: UserCreateInput): Promise<SafeUser> => {
   return prisma.user.create({ data: inputs, select: safeUserSelect });
 };
+
+export const getvalidTeacherIds = (teacherIds: string[]) => {
+  return prisma.user.findMany({
+    where: { id: { in: teacherIds } },
+    select: { id: true },
+  });
+};

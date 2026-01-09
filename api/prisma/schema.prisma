@@ -24,7 +24,8 @@ model User {
   status        ActiveStatus @default(ACTIVE)
   registeredAt  DateTime     @default(now())
 
-  batches Batch[]
+  batches              Batch[]
+  recordedAttencdances StudentAttendance[]
 
   @@index([email, contactNumber])
 }
@@ -65,6 +66,9 @@ model StudentAttendance {
   batchId String
 
   presentStudents Student[]
+
+  recorder   User   @relation(fields: [recorderId], references: [id])
+  recorderId String
 }
 
 model StudentFee {

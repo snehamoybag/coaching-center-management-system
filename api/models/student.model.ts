@@ -105,3 +105,10 @@ export const findMany = (
     include: getSafeStudentIncludes(viewerRole),
   });
 };
+
+export const getvalidStudentIds = (studentIds: string[]) => {
+  return prisma.student.findMany({
+    where: { id: { in: studentIds } },
+    select: { id: true },
+  });
+};

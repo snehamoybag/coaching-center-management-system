@@ -1,6 +1,10 @@
 import { Router } from "express";
 import adminOnly from "../../middlewares/auth/admin-only.middleware";
 import * as batchesController from "../../controllers/batches.controller";
+import {
+  getManyInBatch as getManyAttendanceInBatch,
+  create as createAttendanceInBatch,
+} from "../../controllers/attendances.controller";
 import validBatchOnly from "../../middlewares/valid-batch-only.middleware";
 
 const batchesRouter = Router();
@@ -24,5 +28,10 @@ batchesRouter.get("/:id/students", batchesController.getStudents);
 
 // /batches/:id/teachers
 batchesRouter.get("/:id/teachers", batchesController.getTeachers);
+
+// /batches/:id/attendances
+batchesRouter.get("/:id/attendances", validBatchOnly, getManyAttendanceInBatch);
+
+batchesRouter.post("/:id/attendances", validBatchOnly, createAttendanceInBatch);
 
 export default batchesRouter;

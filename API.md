@@ -202,7 +202,7 @@ Auth:
 - Teachers and admins can access it.
 - Teachers are not allowed to access contact informations and other sensitive data.
 
-### GET /batches/:id/attendance
+### GET /batches/:id/attendances
 
 Returns:
 
@@ -216,11 +216,31 @@ Rule:
 
 - Batch with the matching id must exist.
 
-### POST /batches/:id/attendance
+### POST /batches/:id/attendances
 
 Auth:
 
-- Teachers and admins can take attendance.
+- Teachers and admins can take attendances.
+
+Rule:
+
+- Batch with the matching id must exist.
+
+### GET /attendances/:attendanceId
+
+Auth:
+
+- Teachers and admins can access.
+
+Rule:
+
+- Batch with the matching id must exist.
+
+### PUT /attendances/:attendanceId
+
+Auth:
+
+- Teachers and admins can update attendances.
 
 Rule:
 
