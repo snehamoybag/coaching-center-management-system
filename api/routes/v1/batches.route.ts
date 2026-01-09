@@ -12,6 +12,12 @@ batchesRouter.post("/", adminOnly, batchesController.create);
 // /batches/:id
 batchesRouter.get("/:id", batchesController.getById);
 batchesRouter.put("/:id", adminOnly, validBatchOnly, batchesController.update);
+batchesRouter.delete(
+  "/:id",
+  adminOnly,
+  validBatchOnly,
+  batchesController.deleteOne,
+);
 
 // /batches/:id/students
 batchesRouter.get("/:id/students", batchesController.getStudents);

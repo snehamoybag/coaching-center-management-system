@@ -199,3 +199,7 @@ export const teachersInBatchWithId = (
     },
   });
 };
+
+export const deleteOne = (id: string) => {
+  return prisma.batch.delete({ where: { id } });
+};

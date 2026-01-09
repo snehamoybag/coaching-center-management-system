@@ -149,3 +149,16 @@ export const getTeachers: RequestHandler = async (req, res) => {
     ),
   );
 };
+
+export const deleteOne: RequestHandler = async (req, res) => {
+  const batchId = req.params.id;
+
+  const deletedBatch = await batchModel.deleteOne(batchId);
+
+  return res.json(
+    new SuccessResponse(
+      `Batch with the id '${batchId}' is deleted successfully.`,
+      { batch: deletedBatch },
+    ),
+  ); // data: {batch: {...}}
+};
