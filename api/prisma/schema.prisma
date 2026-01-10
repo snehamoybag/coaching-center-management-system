@@ -72,23 +72,23 @@ model StudentAttendance {
 }
 
 model StudentFee {
-  id     String @id @default(uuid())
-  amount Int
+  id     String  @id @default(uuid())
+  name   String  @unique @db.VarChar(255)
+  amount Decimal @db.Decimal(10, 2)
 
-  student   Student @relation(fields: [studentId], references: [id])
-  studentId String
+  students Student[]
 
-  payment StudentPayment?
+  payments StudentPayment[]
 }
 
 model StudentPayment {
   id     String      @id @default(uuid())
-  amount Int
+  amount Decimal     @db.Decimal(10, 2)
   date   DateTime    @default(now())
   mode   PaymentMode
 
   fee   StudentFee @relation(fields: [feeId], references: [id])
-  feeId String     @unique
+  feeId String
 
   student   Student @relation(fields: [studentId], references: [id])
   studentId String
