@@ -4,7 +4,7 @@ import { Order } from "../types/order-type";
 import { getSafeStudentSelect } from "./student.model";
 import { getSafeTeacherSelect } from "./user.model";
 import { getvalidStudentIds } from "./student.model";
-import { getvalidTeacherIds } from "./user.model";
+import { getValidTeacherIds } from "./user.model";
 
 export const create = async (input: {
   name: string;
@@ -14,7 +14,7 @@ export const create = async (input: {
   const { name, teacherIds, studentIds } = input;
   // filter out invalid ids
   const [validTeacherIds, validStudentIds] = await prisma.$transaction([
-    getvalidTeacherIds(teacherIds || []),
+    getValidTeacherIds(teacherIds || []),
     getvalidStudentIds(studentIds || []),
   ]);
 
@@ -68,8 +68,8 @@ export const update = async (
     validAddedStudentIds,
     validRemovedStudentIds,
   ] = await prisma.$transaction([
-    getvalidTeacherIds(addedTeacherIds || []),
-    getvalidTeacherIds(removedTeacherIds || []),
+    getValidTeacherIds(addedTeacherIds || []),
+    getValidTeacherIds(removedTeacherIds || []),
     getvalidStudentIds(addedStudentIds || []),
     getvalidStudentIds(removedStudentIds || []),
   ]);
@@ -190,4 +190,11 @@ export const teachersInBatchWithId = (
 
 export const deleteOne = (id: string) => {
   return prisma.batch.delete({ where: { id } });
+};
+
+export const getValidBatchIds = (batchIds: string[] = []) => {
+  return prisma.batch.findMany({
+    where: { id: { in: batchIds } },
+    select: { id: true },
+  });
 };

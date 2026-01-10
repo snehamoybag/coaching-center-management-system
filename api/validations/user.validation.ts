@@ -1,5 +1,6 @@
 import { body } from "express-validator";
 import {
+  findByAadhaarNumber as findUserByAadhaarNumber,
   findByContactNumber as findUserByContactNumber,
   findByEmail as findUserByEmail,
 } from "../models/user.model";
@@ -122,5 +123,26 @@ export const aadhaarNumber = (isOptional: boolean = false) => {
     .isNumeric()
     .withMessage("Aadhaar number must be numeric.")
     .isLength({ min: LENGTH, max: LENGTH })
-    .withMessage(`Aadhaar number must have ${LENGTH} numeric characters.`);
+    .withMessage(`Aadhaar number must have ${LENGTH} numeric characters.`)
+    .custom(async (aadhaarNumberValue) => {
+      const userWithSameAadhaarNumber =
+        await findUserByAadhaarNumber(aadhaarNumberValue);
+
+      if (userWithSameAadhaarNumber) {
+        throw new Error("Aadhaar number already registered.");
+      }
+
+      return true;
+    });
+};
+
+export const batchIds = (fieldName: string, isOptional: boolean = false) => {
+  return body(fieldName)
+    .optional(isOptional)
+    .isArray()
+    .withMessage("Batch ids must be an array of strings.")
+    .custom((values: unknown[]) => {
+      return values.every((value) => typeof value === "string");
+    })
+    .withMessage("Batch id must be a string.");
 };

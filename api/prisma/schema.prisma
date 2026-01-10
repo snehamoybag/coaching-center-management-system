@@ -20,6 +20,7 @@ model User {
   firstName     String       @db.VarChar(35)
   lastName      String       @db.VarChar(35)
   contactNumber String       @unique @db.VarChar(10)
+  aadhaarNumber String       @unique @db.VarChar(12)
   role          UserRole     @default(TEACHER)
   status        ActiveStatus @default(ACTIVE)
   registeredAt  DateTime     @default(now())
@@ -27,7 +28,7 @@ model User {
   batches              Batch[]
   recordedAttencdances StudentAttendance[]
 
-  @@index([email, contactNumber])
+  @@index([email, contactNumber, aadhaarNumber])
 }
 
 model Student {

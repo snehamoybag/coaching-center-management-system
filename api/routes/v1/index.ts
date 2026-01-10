@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { SuccessResponse } from "../../libs/http-response-shapes";
 import verifyAuthToken from "../../middlewares/auth/verify-auth-token.auth";
-import signupRouter from "./auth/signup.route";
 import loginRouter from "./auth/login.route";
 import studentsRouter from "./students.route";
 import batchesRouter from "./batches.route";
 import attendancesRouter from "./attendances.route";
 import feesRouter from "./fees.route";
 import paymentRouter from "./payment.route";
+import teachersRouter from "./teachers.route";
 
 const router = Router();
 
@@ -30,11 +30,12 @@ router.post("/", verifyAuthToken, (_req, res) => {
   );
 });
 
-router.use("/auth/signup", signupRouter);
 router.use("/auth/login", loginRouter);
 
 // AUTHORIZATION IS REQUIRED TO ACCESS BELLOW ENDPOINTS
 router.all("/*splat", verifyAuthToken);
+
+router.use("/teachers", teachersRouter);
 
 router.use("/students", studentsRouter);
 
