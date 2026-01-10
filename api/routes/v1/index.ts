@@ -7,6 +7,7 @@ import studentsRouter from "./students.route";
 import batchesRouter from "./batches.route";
 import attendancesRouter from "./attendances.route";
 import feesRouter from "./fees.route";
+import paymentRouter from "./payment.route";
 
 const router = Router();
 
@@ -42,5 +43,7 @@ router.use("/batches", batchesRouter);
 router.use("/attendances", attendancesRouter);
 
 router.use("/fees", feesRouter);
+
+router.use("/payments", paymentRouter);
 
 export default router;
