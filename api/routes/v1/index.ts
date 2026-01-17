@@ -8,6 +8,7 @@ import attendancesRouter from "./attendances.route";
 import feesRouter from "./fees.route";
 import paymentRouter from "./payment.route";
 import teachersRouter from "./teachers.route";
+import statsRouter from "./stats.route";
 
 const router = Router();
 
@@ -46,5 +47,7 @@ router.use("/attendances", attendancesRouter);
 router.use("/fees", feesRouter);
 
 router.use("/payments", paymentRouter);
+
+router.use("/stats", statsRouter);
 
 export default router;

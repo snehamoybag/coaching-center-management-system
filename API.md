@@ -279,3 +279,13 @@ Auth:
 Rule:
 
 - Payement with the id must exist.
+
+### GET /stats
+
+Returns:
+
+- Basic stats of the coaching center (e.g. students count, teachers count etc).
+
+Auth:
+
+- Admins and teachers can access it
