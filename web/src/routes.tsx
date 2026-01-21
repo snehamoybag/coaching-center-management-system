@@ -4,7 +4,7 @@ import Root from "./Root";
 const routes: RouteObject[] = [
   {
     path: "/",
-    element: <Root />,
+    Component: Root,
   },
 ];
 

@@ -1,0 +1,61 @@
+import type { StudentType } from "../../types/StudentType";
+
+const students: StudentType[] = [
+  {
+    id: "1",
+    firstName: "john",
+    lastName: "doe",
+    dateOfBirth: "10/01/2005",
+    parentName: "lorem ipsum",
+    contactNumber: "911234567890",
+    aadhaarNumber: "123456789012",
+    registeredAt: "01/01/2026",
+    status: "ACTIVE",
+  },
+  {
+    id: "2",
+    firstName: "kyle",
+    lastName: "driller",
+    dateOfBirth: "10/01/2005",
+    parentName: "lorem ipsum",
+    contactNumber: "911234567890",
+    aadhaarNumber: "123456789012",
+    registeredAt: "01/01/2026",
+    status: "ACTIVE",
+  },
+  {
+    id: "3",
+    firstName: "susan",
+    lastName: "pit",
+    dateOfBirth: "10/01/2005",
+    parentName: "lorem ipsum",
+    contactNumber: "911234567890",
+    aadhaarNumber: "123456789012",
+    registeredAt: "01/01/2026",
+    status: "ACTIVE",
+  },
+  {
+    id: "4",
+    firstName: "jennifer",
+    lastName: "lorence",
+    dateOfBirth: "10/01/2005",
+    parentName: "lorem ipsum",
+    contactNumber: "911234567890",
+    aadhaarNumber: "123456789012",
+    registeredAt: "01/01/2026",
+    status: "ACTIVE",
+  },
+  {
+    id: "5",
+    firstName: "alice",
+    lastName: "wonderland",
+    dateOfBirth: "10/01/2005",
+    parentName: "lorem ipsum",
+    contactNumber: "911234567890",
+    aadhaarNumber: "123456789012",
+    registeredAt: "01/01/2026",
+    status: "ACTIVE",
+  },
+];
+
+export default students;
