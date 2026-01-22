@@ -8,9 +8,11 @@ export default function Root(): ReactElement {
     // sidebar and main container
     <SidebarProvider>
       {/* sidebar */}
-      <AppSidebar />
+      <aside>
+        <AppSidebar />
+      </aside>
 
-      <main className="p-4">
+      <main className="w-full p-4 space-y-4">
         {/* sidebar toggle button */}
         <SidebarTrigger title="Toggle sidebar" />
 
