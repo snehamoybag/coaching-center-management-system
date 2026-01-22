@@ -4,8 +4,15 @@ import errorRequestHandler from "./middlewares/error-request-handler.middleware"
 import requeset404Handler from "./middlewares/error-404-handler.middleware";
 import v1Router from "./routes/v1";
 import passport from "passport";
+import cors, { CorsOptions } from "cors";
 
 const app = express();
+
+// CORS
+const corsOptions: CorsOptions = {
+  origin: process.env.WEB_URL,
+};
+app.use(cors(corsOptions));
 
 // INTIALIZE PASSPORT AUTH STRATEGIES
 import "./configs/passport";

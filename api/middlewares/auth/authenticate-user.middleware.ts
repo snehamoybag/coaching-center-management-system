@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { RequestHandler } from "express";
 import passport from "passport";
 import { AuthenticateCallback } from "passport";
@@ -5,8 +6,12 @@ import { ErrorUnauthorized } from "../../libs/http-exceptions";
 
 const authenticateUser: RequestHandler = async (req, res, next) => {
   const authentcateCallback: AuthenticateCallback = (err, user, info) => {
+    const environment = process.env.ENVIRONMENT?.toLowerCase() || "prod";
+
     if (err) {
-      console.log("error");
+      if (environment !== "prod") {
+        console.log(err);
+      }
       return next(err);
     }
 
