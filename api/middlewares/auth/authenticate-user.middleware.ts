@@ -6,10 +6,8 @@ import { ErrorUnauthorized } from "../../libs/http-exceptions";
 
 const authenticateUser: RequestHandler = async (req, res, next) => {
   const authentcateCallback: AuthenticateCallback = (err, user, info) => {
-    const environment = process.env.ENVIRONMENT?.toLowerCase() || "prod";
-
     if (err) {
-      if (environment !== "prod") {
+      if (process.env.NODE_ENV !== "production") {
         console.log(err);
       }
       return next(err);

@@ -5,8 +5,9 @@
   "main": "dist/app.js",
   "scripts": {
     "dev": "tsx watch app.ts",
-    "build": "prisma generate && tsc",
-    "start": "prisma migrate deploy && prisma generate && node dist/app.js",
+    "seed": "prisma db seed",
+    "build": "tsc",
+    "start": "prisma migrate deploy && prisma generate && prisma db seed && node dist/app.js",
     "lint": "eslint",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

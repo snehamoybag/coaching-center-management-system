@@ -9,24 +9,17 @@ import feesRouter from "./fees.route";
 import paymentRouter from "./payment.route";
 import teachersRouter from "./teachers.route";
 import statsRouter from "./stats.route";
+import { SafeUser } from "../../types/safe-user.type";
 
 const router = Router();
 
-router.get("/", (_req, res) => {
-  res.json(
-    new SuccessResponse("Connected to API - Coaching Center (v1)", {
-      name: "API - Coaching Center (v1)",
-      version: "1.0.0",
-    }),
-  );
-});
-
 // use this route to check if the issued auth token is still valid
-router.post("/", verifyAuthToken, (_req, res) => {
+router.get("/", verifyAuthToken, (req, res) => {
   res.json(
     new SuccessResponse("Connected to API - Coaching Center (v1)", {
       name: "API - Coaching Center (v1)",
       version: "1.0.0",
+      user: req.user as SafeUser,
     }),
   );
 });
