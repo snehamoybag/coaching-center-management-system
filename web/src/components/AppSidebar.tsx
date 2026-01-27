@@ -7,12 +7,16 @@ import {
   SidebarTrigger,
 } from "./ui/sidebar";
 import SidebarMainMenu from "./SidebarMainMenu";
+import type { UserType } from "@/types/UserType";
+import { Link } from "react-router";
 
 interface AppSidebarProps {
+  user: UserType;
   className?: string;
 }
 
 export default function AppSidebar({
+  user,
   className = "",
 }: Readonly<AppSidebarProps>): ReactElement {
   return (
@@ -29,7 +33,11 @@ export default function AppSidebar({
         <SidebarMainMenu />
       </SidebarContent>
 
-      <SidebarFooter>Snehamoy Bag</SidebarFooter>
+      <SidebarFooter>
+        <Link to={`/profile/${user.id}`} className="capitalize">
+          {user.firstName} {user.lastName}
+        </Link>
+      </SidebarFooter>
     </Sidebar>
   );
 }

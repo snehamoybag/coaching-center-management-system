@@ -24,3 +24,31 @@ export class CustomError extends Error {
     super(`Status ${statusCode}: ${message}`);
   }
 }
+
+const assertApiKey = () => {
+  const KEY = import.meta.env.VITE_API_KEY as unknown;
+
+  if (!KEY || typeof KEY !== "string") {
+    throw new CustomError(500, "Api key not found in enviroment variables.");
+  }
+
+  return KEY;
+};
+
+export const getApiToken = () => {
+  const KEY = assertApiKey();
+
+  return localStorage.getItem(KEY);
+};
+
+export const setApiToken = (token: string) => {
+  const KEY = assertApiKey();
+
+  localStorage.setItem(KEY, token);
+};
+
+export const removeApiToken = () => {
+  const KEY = assertApiKey();
+
+  localStorage.removeItem(KEY);
+};

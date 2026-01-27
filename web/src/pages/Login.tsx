@@ -5,11 +5,15 @@ import { Title700 } from "@/components/ui/title";
 import { type ReactElement } from "react";
 import { useFetcher } from "react-router";
 
+/* 
+  FORM ACTION HANDLES THE SUCCESSFUL AUTHENTICATION
+  THIS COMPONENT ONLY NEEDS TO HANDLE FAILED AUTHENTICATION AND INITIAL STATE.
+*/
 export default function Login(): ReactElement {
   const fetcher = useFetcher();
   const { Form, state } = fetcher;
-  const data = fetcher.data as Record<string, unknown> | undefined;
-  const hasAuthenticationFailed = data && data.error !== undefined;
+  const data = fetcher.data as { error: string } | undefined;
+  const isInvalid = data && data.error !== undefined;
 
   return (
     <section className="space-y-8">
@@ -19,10 +23,8 @@ export default function Login(): ReactElement {
       </div>
 
       <Form method="POST" className="max-w-md space-y-4">
-        {hasAuthenticationFailed && (
-          <FieldError className="font-semibold">
-            {data.error as string}
-          </FieldError>
+        {isInvalid && (
+          <FieldError className="font-semibold">{data.error}</FieldError>
         )}
 
         <Field>
@@ -35,7 +37,7 @@ export default function Login(): ReactElement {
             name="email"
             placeholder="example@email.com"
             required
-            aria-invalid={hasAuthenticationFailed}
+            aria-invalid={isInvalid}
           />
           <FieldError />
         </Field>
@@ -49,11 +51,15 @@ export default function Login(): ReactElement {
             id="password"
             name="password"
             required
-            aria-invalid={hasAuthenticationFailed}
+            aria-invalid={isInvalid}
           />
         </Field>
 
-        <Button type="submit" className="capitalize">
+        <Button
+          type="submit"
+          className="capitalize"
+          disabled={state !== "idle"}
+        >
           {state === "idle" ? "Log in" : state + "..."}
         </Button>
       </Form>
